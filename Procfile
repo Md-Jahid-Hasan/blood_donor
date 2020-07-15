@@ -1,0 +1,1 @@
+web: gunicorn blood_doner.wsgi --log-file -

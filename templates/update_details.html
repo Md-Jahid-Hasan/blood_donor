@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block mainblock %}
+<div class="container text-justify">
+
+    <div class="text-justify"><b>Name                         </b>: {{donor.user.first_name}}</div>
+    <div><b>Phone Number                 </b>: {{donor.phone_number}}</div>
+    <div><b>Date of Birth                </b>: {{donor.user.date_of_birth}}</div>
+    <div><b>Permanent Address            </b>: {{donor.permanent_address}}</div>
+    <div><b>District                     </b>: {{donor.district}}</div>
+    <div><b>Organization                 </b>: {{donor.organization}}</div>
+    <div><b> Last Date of Donation        </b>: {{donor.last_date_of_donation}}</div>
+</div>
+{% endblock %}

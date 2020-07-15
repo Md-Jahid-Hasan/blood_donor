@@ -1,0 +1,39 @@
+
+{% extends 'base.html' %}
+
+{% block mainblock %}
+    <div class="container">
+        <div class="row justify-content-center ">
+            <div class="form-group">
+             <form method="post">{% csrf_token %}
+                 {% for field in form %}
+
+                    {{field.label_tag}}
+                    {% if field.name == "last_date_of_donation" %}
+                        <div>Last Date : {{donation_date}}</div>
+                        <p>Add New Date of Donation</p>
+                    {% endif %}
+
+                    {{field}}
+                    {% if field.help_text %}
+                        <small>{{field.help_text}}</small><br>
+                    {% endif %}
+
+                    {% if field.errors %}
+                        {{field.errors}}
+                    {% endif %}
+                 {% endfor %}
+                 <br>
+                <button type="submit" class="btn btn-primary">Done</button>
+                 {% if form.non_field_errors %}
+                    {{form.non_field_errors}}
+                 {% endif %}
+            </form>
+                </div>
+            <form action="{% url 'logout' %}" method="POST"> {%csrf_token%}
+                <button type="submit">Logout</button>
+            </form>
+
+        </div>
+    </div>
+{% endblock %}

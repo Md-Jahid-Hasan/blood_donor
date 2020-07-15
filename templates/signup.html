@@ -1,0 +1,77 @@
+
+{% extends 'base.html' %}
+
+{% block mainblock %}
+<!--    <div class="container">-->
+<!--        <div class="row justify-content-center">-->
+<!--            <form action="{% url 'signup' %}" method="POST"> {% csrf_token %}-->
+<!--                <div class="form-group">-->
+<!--                <div class="row">-->
+<!--                    <div class="col">-->
+<!--                      <input type="text" name="fname" class="form-control" placeholder="First name">-->
+<!--                    </div>-->
+<!--                    <div class="col">-->
+<!--                      <input type="text" name="lname" class="form-control" placeholder="Last name">-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--                </div>-->
+<!--                 <div class="form-group">-->
+
+<!--                    <label for="email">Email address</label>-->
+<!--                    <input type="email" class="form-control" name="email" id="email" aria-describedby="emailHelp" placeholder="Enter email">-->
+<!--                    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>-->
+<!--                  </div>-->
+<!--                  <div class="form-group">-->
+<!--                    <label for="pass1">Password</label>-->
+<!--                    <input type="password" class="form-control" name="pass1" id="pass1" placeholder="Password">-->
+<!--                  </div>-->
+
+<!--                     <div class="form-group">-->
+<!--                    <label for="pass2">Retype Password</label>-->
+<!--                    <input type="password" class="form-control" name="pass2" id="pass2" placeholder="Retype Password">-->
+<!--                  </div>-->
+<!--                    <div class="form-group">-->
+<!--                        <label >Enter your Date of Birth</label>-->
+<!--                         <input type="date" name="date" max="3000-12-31"-->
+<!--                                min="1000-01-01" class="form-control">-->
+<!--                        </div>-->
+
+<!--                  <button type="submit" class="btn btn-primary">Submit</button>-->
+<!--            </form>-->
+<!--        </div>-->
+<!--    </div>-->
+
+
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <form method="post"> {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                    {{field.label_tag }}
+                    {{ field }}
+                     {% if field.help_text %}
+                        <small class="form-text text-muted">{{field.help_text}}</small>
+                      {% endif %}
+                   {% if field.errors%}
+                     <br><div class="alert-danger align-center">{{field.errors}}</div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <button type="submit" class="btn btn-primary">Submit</button>
+
+                {% for field in form%}
+                {% for error in field.errors%}
+                <div class="alert-danger align-center">{{error}}</div>
+                {% endfor%}
+                {% endfor %}
+                <br>
+                {% if form.non_field_errors%}
+                <div class="alert-danger align-center">{{form.non_field_errors}}</div>
+                {% endif %}
+            </form>
+
+        </div>
+    </div>
+
+{% endblock %}

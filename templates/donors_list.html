@@ -1,0 +1,29 @@
+
+{% extends 'base.html' %}
+
+{% block mainblock %}
+<div class="container">
+    <table class="table table-hover" id="sm">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Last Blood Donation Date</th>
+      <th scope="col">Phone Number</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for details in details %}
+    <tr>
+      <th scope="row">1</th>
+      <td><a href="{% url 'donor_details' pk=details.pk %}" style="text-decoration: none">{{details.user.first_name}}</a></td>
+      <td>{{details.last_date_of_donation}}</td>
+      <td>{{details.organization}}</td>
+    </tr>
+  {% endfor %}
+
+  </tbody>
+</table>
+    </div>
+
+{% endblock %}
