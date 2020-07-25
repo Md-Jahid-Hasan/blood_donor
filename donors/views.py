@@ -35,7 +35,7 @@ def add_donor_details(request):
             data.user = request.user
             print(request.user)
             data.save()
-            d = BloodDonationHistory(user=request.user, date=ldd)
+            d = BloodDonationHistory(user=request.user, donor_details=donor, date=ldd)
             d.save()
 
     else:
@@ -96,6 +96,13 @@ def donor_list(request):
 
 def donor_details(request, pk):
     donor = DonorDetails.objects.get(pk=pk)
-    print(donor.user)
+    donation_history = BloodDonationHistory.objects.filter(donor_details=donor)
 
-    return render(request, 'update_details.html', {'donor': donor})
+    context = {
+        'donor': donor,
+        'date': donation_history
+    }
+    return render(request, 'update_details.html', context)
+
+
+

@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block  headblock %}
+
+{% endblock %}
+
+
+{% block mainblock %}
+
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+      <canvas id="myChart" width="400" height="400"></canvas>
+    </div>
+      <div class="col-sm" url-endpoint="{% url 'get_data' %}">
+           <form action="{% url 'get_data' %}" method="POST", id="post-form">{% csrf_token %}
+        <div class="row">
+          <div class="col">
+          <select class="form-control form-control-sm" id="month">
+
+             {% for month in donate_month %}
+            <option value="{{month.month}}">{{month}}</option>
+              {% endfor %}
+          </select>
+            </div>
+          <div class="col">
+         <select class="form-control form-control-sm" id="year">
+           {% for year in donate_year%}
+            <option value="{{year}}">{{year}}</option>
+           {% endfor %}
+        </select>
+            </div>
+
+          <div class="col"><button type="submit">sub</button></div>
+        </div>
+
+      </form>
+        <canvas id="myChart2" width="400" height="400"></canvas>
+      </div>
+  </div>
+
+</div>
+
+<script src="{% static 'js/mychart.js' %}"></script>
+{% endblock %}
+
+
+
+
+
+

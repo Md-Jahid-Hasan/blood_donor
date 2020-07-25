@@ -17,7 +17,7 @@ class DonorDetailsForm(forms.ModelForm):
             'district': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Your Blood Group'}),
             'specific_area': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Your Blood Group'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Your Blood Group'}),
-            'last_date_of_donation': forms.SelectDateWidget(attrs={'class': 'form-control'}),
+            'last_date_of_donation': forms.TextInput(attrs={'class': 'form-control', 'type': 'date'}),
             'organization': forms.TextInput(attrs={'class': 'form-control',
                                                    'placeholder': 'Enter your current organization'})
         }

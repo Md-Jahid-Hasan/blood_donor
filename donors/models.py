@@ -4,6 +4,8 @@ from django.db.models.signals import post_save
 
 
 class DonorDetails(models.Model):
+
+    user = models.OneToOneField('users.User', on_delete=models.CASCADE, primary_key=True)
     BLOOD_GROUP = [
         ('A+', 'A Positive(A+)'),
         ('A-', 'A Negative(A-)'),
@@ -14,7 +16,6 @@ class DonorDetails(models.Model):
         ('O+', 'O Positive(O+)'),
         ('O-', 'O Negative(O-)'),
     ]
-    user = models.OneToOneField('users.User', on_delete=models.CASCADE, primary_key=True)
     blood_group = models.CharField(max_length=5, null=False, choices=BLOOD_GROUP, blank=True)
     permanent_address = models.CharField(max_length=100, blank=True)
     present_address = models.CharField(max_length=100, blank=True)
@@ -29,22 +30,24 @@ class DonorDetails(models.Model):
         return self.blood_group + " " + self.district
 
 
-def create_donor_details(sender, instance, created, **kwargs):
-    if created:
-        DonorDetails.objects.create(user=instance)
-        print("Donor details Created")
-    else:
-        instance.donordetails.save()
-        print('Donor Details updated')
-
-
-post_save.connect(create_donor_details, sender=User)
+# def create_donor_details(sender, instance, created, **kwargs):
+#     if created:
+#         DonorDetails.objects.create(user=instance)
+#         print("Donor details Created")
+#     else:
+#         instance.donordetails.save()
+#         print('Donor Details updated')
+#
+#
+# post_save.connect(create_donor_details, sender=User)
 
 
 class BloodDonationHistory(models.Model):
     date = models.DateField()
     details = models.CharField(max_length=100, blank=True, null=True)
-    user = models.ForeignKey('users.User', on_delete=models.CASCADE)
+    user = models.ForeignKey('users.User', on_delete=models.CASCADE, related_name='user')
+    donor_details = models.ForeignKey('DonorDetails', on_delete=models.CASCADE, related_name='donor_details',
+                                      blank=True, null=True)
 
     def __str__(self):
         return self.user.email + " " + str(self.date)

@@ -5,5 +5,6 @@ urlpatterns = [
     url(r'^update_details/$', add_donor_details, name='add_donor_details'),
     url(r'^$', search_donor, name='search_donor'),
     url(r'^donor/list/$', donor_list, name='donor_list'),
-    url(r'^donor/details/(?P<pk>\d+)/$', donor_details, name='donor_details')
+    url(r'^donor/details/(?P<pk>\d+)/$', donor_details, name='donor_details'),
+    # url(r'^statistic/$', overview, name='overview')
 ]

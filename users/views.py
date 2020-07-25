@@ -5,6 +5,7 @@ from .models import User
 from .forms import LoginForm, CreateUserForm
 from donors.forms import DonorDetailsForm
 from donors.models import DonorDetails
+from django.utils.http import is_safe_url
 
 
 # def login(request):
@@ -75,11 +76,12 @@ def create_user(request):
             email = form.cleaned_data['email']
             dob = form.cleaned_data['date_of_birth']
             password = form.cleaned_data['password']
+            bg = form.cleaned_data['blood_group']
             print(fname, lname, email, dob, password)
             user = User.objects.create_user(email=email, first_name=fname, last_name=lname,
                                             password=password, date_of_birth=dob)
-            # donor = DonorDetails(user=user, blood_group='O+')
-            # donor.save()
+            donor = DonorDetails(user=user, blood_group=bg)
+            donor.save()
             return redirect('add_donor_details')
 
     else:
@@ -93,5 +95,6 @@ def create_user(request):
 
 
 def user_logout(request):
+
     logout(request)
-    return redirect('login')
+    return redirect(request.GET.get('next'))

@@ -29,16 +29,27 @@ class LoginForm(forms.ModelForm):
 
 
 class CreateUserForm(forms.ModelForm):
+    BLOOD_GROUP = [
+        ('A+', 'A Positive(A+)'),
+        ('A-', 'A Negative(A-)'),
+        ('B+', 'B Positive(B+)'),
+        ('B-', 'B Negative(B-)'),
+        ('AB+', 'AB Positive(AB+)'),
+        ('AB-', 'AB Negative(AB-)'),
+        ('O+', 'O Positive(O+)'),
+        ('O-', 'O Negative(O-)'),
+    ]
     # password = forms.CharField(label="Your Password",widget=forms.PasswordInput(attrs={'placeholder':'Enter Password',
     #                                                                                     'class': 'form-control'})),
     password1 = forms.CharField(label='Retype Your Password',
                                 widget=forms.PasswordInput(attrs={'placeholder': 'Retype Password',
                                                                   'class': 'form-control'}))
+    blood_group = forms.ChoiceField(label="Your Blood Group", choices=BLOOD_GROUP,
+                                    widget=forms.Select(attrs={'class': 'form-control'}))
 
     class Meta:
         model = User
         fields = ('first_name', 'last_name', 'email', 'date_of_birth', 'password')
-
 
         widgets = {
             'email': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Email',
@@ -49,7 +60,7 @@ class CreateUserForm(forms.ModelForm):
                                                 'class': 'form-control', 'placeholder': 'Enter Your Last Name'}),
             'date_of_birth': forms.TextInput(attrs={'class': 'form-control', 'type': 'date'}),
             'password': forms.PasswordInput(attrs={'class': 'form-control',
-                                                     'placeholder': 'Enter Your Password',
+                                                   'placeholder': 'Enter Your Password',
                                                    })
         }
 
@@ -66,6 +77,3 @@ class CreateUserForm(forms.ModelForm):
             if len(User.objects.filter(email=email)) != 0:
                 raise forms.ValidationError("Olreday Exists")
         return email
-
-
-
