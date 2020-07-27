@@ -12,12 +12,17 @@ class DonorDetailsForm(forms.ModelForm):
         widgets = {
             'blood_group': forms.Select(attrs={'class': 'form-control form-control-chosen',
                                                'data-placeholder': 'Enter Your Blood Group'}),
+
             'permanent_address': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Your Blood Group'}),
+
             'present_address': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Your Blood Group'}),
+
             'district': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Your Blood Group'}),
             'specific_area': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Your Blood Group'}),
             'phone_number': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Your Blood Group'}),
+
             'last_date_of_donation': forms.TextInput(attrs={'class': 'form-control', 'type': 'date'}),
+
             'organization': forms.TextInput(attrs={'class': 'form-control',
                                                    'placeholder': 'Enter your current organization'})
         }
@@ -30,6 +35,9 @@ class DonorDetailsForm(forms.ModelForm):
         help_texts = {
             'organization': 'Please provide valid organization name. It will help you to find shortly. Take care '
                             'about spelling.',
+            'last_date_of_donation': 'Last when give Blood',
+            'phone_number': 'Enter valid number',
+            'specific_area': 'Which area you able to donate blood '
         }
 
     def clean(self):

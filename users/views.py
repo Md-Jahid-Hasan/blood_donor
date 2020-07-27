@@ -5,30 +5,9 @@ from .models import User
 from .forms import LoginForm, CreateUserForm
 from donors.forms import DonorDetailsForm
 from donors.models import DonorDetails
-from django.utils.http import is_safe_url
-
-
-# def login(request):
-#
-#     if request.method == 'POST':
-#         email = request.POST.get('email')
-#         password = request.POST.get('password')
-#         print(email, password)
-#         if len(User.objects.filter(email=email)) == 0:
-#             messages.error(request, "User Doesn't Exists")
-#         else:
-#             user = authenticate(request, email=email, password=password)
-#
-#             if user is not None:
-#                 print(user)
-#                 login(user)
-#                 return redirect('home')
-#             # else:
-#             #     messages.error(request, "Password is not matching")
-#
-#     context = {
-#     }
-#     return render(request, 'login.html', context)
+import random
+from blood_doner.settings import EMAIL_HOST_USER
+from django.core.mail import send_mail
 
 
 def user_login(request):
@@ -54,20 +33,9 @@ def user_login(request):
 
 
 def create_user(request):
-    # if request.method == 'POST':
-    #     fname = request.POST.get('fname')
-    #     lname = request.POST.get('lname')
-    #     email = request.POST.get('email')
-    #     pass1 = request.POST.get('pass1')
-    #     pass2 = request.POST.get('pass2')
-    #     date = request.POST.get('date')
-    #     print(date, fname, lname, email, pass1, pass2)
-    #
-    #     # user = User.objects.create_user(email=email, first_name=fname, last_name=lname,
-    #     #                                 password=pass1, date_of_birth=date)
-    #     user = authenticate(email=email, password=pass1)
-    #     if user is not  None:
-    #         login(request, user)
+    if request.method == 'POST':
+        print("Hello json")
+
     if request.POST:
         form = CreateUserForm(request.POST)
         if form.is_valid():
@@ -77,12 +45,23 @@ def create_user(request):
             dob = form.cleaned_data['date_of_birth']
             password = form.cleaned_data['password']
             bg = form.cleaned_data['blood_group']
-            print(fname, lname, email, dob, password)
+
+            key = random.randint(1000, 9999)
+            request.session['token'] = key
+            print(key)
+            subject = 'Welcome!'
+            message = 'Welcome to My site.'
+            recepient = str(email)
+
+            mail_counter = send_mail(subject, message, EMAIL_HOST_USER, [recepient], fail_silently=True)
+            print(mail_counter, "Print mail counter")
+
             user = User.objects.create_user(email=email, first_name=fname, last_name=lname,
                                             password=password, date_of_birth=dob)
+            request.session['user'] = email
             donor = DonorDetails(user=user, blood_group=bg)
             donor.save()
-            return redirect('add_donor_details')
+            return redirect('login')
 
     else:
         form = CreateUserForm()
@@ -95,6 +74,27 @@ def create_user(request):
 
 
 def user_logout(request):
-
     logout(request)
     return redirect(request.GET.get('next'))
+
+
+def validate_user(request):
+    try:
+        key = request.session['token']
+        user = request.session['user']
+    except:
+        return redirect('login')
+
+    print(user, key)
+    if request.method == "POST":
+        k = int(request.POST.get('key'))
+        if k == key:
+            del request.session['token']
+            del request.session['user']
+            print("Delete")
+
+
+    context = {
+
+    }
+    return render(request, 'validate.html', context)

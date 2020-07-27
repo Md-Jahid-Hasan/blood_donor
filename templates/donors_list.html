@@ -3,6 +3,8 @@
 
 {% block mainblock %}
 <div class="container">
+
+  {% if found != 0 %}
     <table class="table table-hover" id="sm">
   <thead>
     <tr>
@@ -15,7 +17,7 @@
   <tbody>
   {% for details in details %}
     <tr>
-      <th scope="row">1</th>
+      <th scope="row">{{forloop.counter}}</th>
       <td><a href="{% url 'donor_details' pk=details.pk %}" style="text-decoration: none">{{details.user.first_name}}</a></td>
       <td>{{details.last_date_of_donation}}</td>
       <td>{{details.organization}}</td>
@@ -24,6 +26,29 @@
 
   </tbody>
 </table>
+<!--  Page{{details.number}} From {{details.paginator.num_pages}}-->
+  {% if details.paginator.num_pages > 1 %}
+  {% if details.has_previous %}
+    <a href="?page={{details.previous_page_number}}" data-toggle="tooltip" title="previous" class="btn btn-xs btn-default">Previous</a>
+  {% endif %}
+
+  {% for j in details.paginator.page_range %}
+    {% if details.number == j %}
+    <a href="#" onclick="return false" data-toggle="tooltip" title="{{Disables}}" class="btn btn-xs btn-default">{{j}}</a>
+    {% else %}
+    <a href="?page={{j}}" data-toggle="tooltip" title="{{j}}" class="btn btn-xs btn-default">{{j}}</a>
+    {% endif %}
+  {% endfor %}
+
+  {% if details.has_next %}
+    <a href="?page={{details.next_page_number}}" data-toggle="tooltip" title="next" class="btn btn-xs btn-default">Next</a>
+  {% endif %}
+  {% endif %}
+
+
+  {% else %}
+  <h1> No Donor found</h1>
+  {% endif %}
     </div>
 
 {% endblock %}

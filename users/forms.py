@@ -59,6 +59,7 @@ class CreateUserForm(forms.ModelForm):
             'last_name': forms.TextInput(attrs={'label': 'Enter Last Name',
                                                 'class': 'form-control', 'placeholder': 'Enter Your Last Name'}),
             'date_of_birth': forms.TextInput(attrs={'class': 'form-control', 'type': 'date'}),
+
             'password': forms.PasswordInput(attrs={'class': 'form-control',
                                                    'placeholder': 'Enter Your Password',
                                                    })
@@ -69,11 +70,11 @@ class CreateUserForm(forms.ModelForm):
         pas2 = self.cleaned_data['password1']
 
         if pas1 != pas2:
-            raise forms.ValidationError("Password Dosen't match")
+            raise forms.ValidationError("Password Doesn't match")
 
     def clean_email(self):
         if self.is_valid():
             email = self.cleaned_data['email']
             if len(User.objects.filter(email=email)) != 0:
-                raise forms.ValidationError("Olreday Exists")
+                raise forms.ValidationError("Already Exists")
         return email

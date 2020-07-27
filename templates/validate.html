@@ -1,0 +1,11 @@
+{% extends 'base.html'%}
+
+{% block mainblock %}
+<h1> Activate your account by entering token given by email</h1>
+    <form action="{% url 'validate' %}" method="POST">{% csrf_token %}
+        <label> Inter your key</label>
+        <input type="number" id="key" name="key">
+        <button type="submit">Submit</button>
+
+    </form>
+{% endblock %}

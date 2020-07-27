@@ -3,34 +3,30 @@ from django.http import JsonResponse
 from users.models import User
 from donors.models import DonorDetails
 from .models import MonthlyTotalDonate, MonthlyTotalJoin
-from .forms import MonthlyDonationChart
 import datetime
 
 
-def get_data(request, *args, **kwargs):
+def get_data(request):
     list_month = []
     blood_group = []
     label = []
+
+    today = datetime.datetime.now()
+    current_month = today.strftime('%B')
+    current_year = today.year
+
     if request.method == 'POST':
         year = request.POST.get('donate_year')
         month = request.POST.get('donate_month')
-        # print(year, month)
+
         if year is not None:
             query_month = MonthlyTotalDonate.objects.filter(year=year)
             for m in query_month:
                 list_month.append(m.month)
-        if month is not None:
 
+        if month is not None:
             x = MonthlyTotalDonate.objects.get(month=month, year=year)
-            print(month, year, "Sol")
-            # total_op = len(MonthlyTotalDonate.objects.filter(blood_group='O+', month=month))
-            # total_on = len(MonthlyTotalDonate.objects.filter(blood_group='O-', month=month))
-            # total_ap = len(MonthlyTotalDonate.objects.filter(blood_group='A+', month=month))
-            # total_an = len(MonthlyTotalDonate.objects.filter(blood_group='A-', month=month))
-            # total_bp = len(MonthlyTotalDonate.objects.filter(blood_group='B+', month=month))
-            # total_bn = len(MonthlyTotalDonate.objects.filter(blood_group='B-', month=month))
-            # total_abp = len(MonthlyTotalDonate.objects.filter(blood_group='AB+', month=month))
-            # total_abn = len(MonthlyTotalDonate.objects.filter(blood_group='AB-', month=month))
+
             blood_group = [x.total_ap_donate, x.total_an_donate, x.total_bp_donate, x.total_bn_donate,
                            x.total_op_donate, x.total_on_donate, x.total_abp_donate, x.total_abn_donate]
             label = ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"]
@@ -42,6 +38,7 @@ def get_data(request, *args, **kwargs):
         return JsonResponse(d)
 
     total_user = len(User.objects.all())
+    this_month = MonthlyTotalDonate.objects.get(month=current_month, year=current_year)
     total_op = len(DonorDetails.objects.filter(blood_group='O+'))
     total_on = len(DonorDetails.objects.filter(blood_group='O-'))
     total_ap = len(DonorDetails.objects.filter(blood_group='A+'))
@@ -52,21 +49,15 @@ def get_data(request, *args, **kwargs):
     total_abn = len(DonorDetails.objects.filter(blood_group='AB-'))
     blood_group = [total_ap, total_an, total_bp, total_bn, total_op, total_on, total_abp, total_abn]
     label = ["A+", "A-", "B+", "B-", "O+", "O-", "AB+", "AB-"]
-
-    op_donate = MonthlyTotalDonate.objects.filter
+    this_month_data = [this_month.total_ap_donate, this_month.total_an_donate, this_month.total_bp_donate,
+                       this_month.total_bn_donate, this_month.total_op_donate, this_month.total_on_donate,
+                       this_month.total_abp_donate, this_month.total_abn_donate]
 
     data = {
         'label': label,
-        # 'total_user': total_user,
-        # 'total_op': total_op,
-        # 'total_on': total_on,
-        # 'total_ap': total_ap,
-        # 'total_an': total_an,
-        # 'total_bp': total_bp,
-        # 'total_bn': total_bn,
-        # 'total_abp': total_abp,
-        # 'total_abn': total_abn,
-        'blood_group': blood_group
+        'blood_group': blood_group,
+        'monthly_data': this_month_data,
+
     }
     return JsonResponse(data)
 
@@ -91,13 +82,4 @@ def get_chart(request):
     return render(request, 'statistic.html', context)
 
 
-def make_donate_month(request, *args, **kwargs):
-    print("Hi tkrkfdhshfskgkfhshl")
-    if request.method == 'POST':
-        print("Month response")
 
-    context = {
-
-    }
-
-    return JsonResponse(context)

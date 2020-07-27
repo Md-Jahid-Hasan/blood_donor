@@ -4,6 +4,7 @@ from .models import DonorDetails, BloodDonationHistory
 from users.models import User
 from django.db.models import Q
 import datetime
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 
 def add_donor_details(request):
@@ -68,9 +69,9 @@ def search_donor(request):
     }
     return render(request, 'home.html', context)
 
-
+donor_detail = []
 def donor_list(request):
-    donor_detail = None
+    global donor_detail
     if request.POST:
         form = SearchDonorForm(request.POST)
         if form.is_valid():
@@ -86,9 +87,21 @@ def donor_list(request):
                 donor_detail = donor_detail.filter(specific_area=specific_area)
             if organization is not "":
                 donor_detail = donor_detail.filter(organization=organization)
+    length = len(donor_detail)
+    print(length, "Number of Donor")
+    paginator = Paginator(donor_detail, 10)
+    page_number = request.GET.get('page')
+
+    try:
+        all_donor = paginator.page(page_number)
+    except EmptyPage:
+        all_donor = paginator.page(paginator.num_pages)
+    except PageNotAnInteger:
+        all_donor = paginator.page(1)
 
     context = {
-        'details': donor_detail
+        'details': all_donor,
+        'found': length,
     }
 
     return render(request, 'donors_list.html', context)
@@ -102,6 +115,20 @@ def donor_details(request, pk):
         'donor': donor,
         'date': donation_history
     }
+    return render(request, 'update_details.html', context)
+
+
+def about_donor(request):
+
+    if not request.user.is_authenticated:
+        return redirect('login')
+    donor = DonorDetails.objects.get(user=request.user)
+    donation_history = BloodDonationHistory.objects.filter(user=request.user)
+    context = {
+        'donor': donor,
+        'date': donation_history,
+    }
+
     return render(request, 'update_details.html', context)
 
 

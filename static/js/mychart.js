@@ -11,7 +11,8 @@ $.ajax({
        console.log(data)
        label = data.label
        mydata = data.blood_group
-        chartDetails()
+       chartDetails()
+       chartDetails2(label, data.monthly_data)
 
   },
 });
@@ -163,7 +164,6 @@ $(document).ready(function(){
                 newdata = d.blood_group
                 console.log(d.blood_group)
                 console.log(d.label)
-
                 chartDetails2(newlabel, newdata)
             }
 

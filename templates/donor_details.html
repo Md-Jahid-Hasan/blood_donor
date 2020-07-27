@@ -7,10 +7,13 @@
             <div class="form-group">
              <form method="post">{% csrf_token %}
                  {% for field in form %}
+                    <div class="form-group">
 
                     {{field.label_tag}}
                     {% if field.name == "last_date_of_donation" %}
-                        <div>Last Date : {{donation_date}}</div>
+                        <fieldset disabled>
+                            <input type="text" class="form-control" value="{{donation_date}}">
+                        </fieldset>
                         <p>Add New Date of Donation</p>
                     {% endif %}
 
@@ -22,6 +25,7 @@
                     {% if field.errors %}
                         {{field.errors}}
                     {% endif %}
+                    </div>
                  {% endfor %}
                  <br>
                 <button type="submit" class="btn btn-primary">Done</button>
