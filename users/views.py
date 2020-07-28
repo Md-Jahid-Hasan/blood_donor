@@ -6,7 +6,7 @@ from .forms import LoginForm, CreateUserForm
 from donors.forms import DonorDetailsForm
 from donors.models import DonorDetails
 import random
-from blood_doner.settings import EMAIL_HOST_USER
+# from blood_doner.settings import EMAIL_HOST_USER
 from django.core.mail import send_mail
 
 
@@ -21,7 +21,7 @@ def user_login(request):
             # print("User: ", user)
             if user:
                 login(request, user)
-            return redirect("/")
+            return redirect("add_donor_details")
     else:
         form = LoginForm()
 
@@ -46,15 +46,18 @@ def create_user(request):
             password = form.cleaned_data['password']
             bg = form.cleaned_data['blood_group']
 
-            key = random.randint(1000, 9999)
-            request.session['token'] = key
-            print(key)
-            subject = 'Welcome!'
-            message = 'Welcome to My site.'
-            recepient = str(email)
+            #          Email Verification Process
+            # key = random.randint(1000, 9999)
+            # request.session['token'] = key
+            # print(key)
+            # subject = 'Welcome!'
+            # message = 'Welcome to My site.'
+            # recepient = str(email)
+            #
+            # mail_counter = send_mail(subject, message, EMAIL_HOST_USER, [recepient], fail_silently=True)
+            # print(mail_counter, "Print mail counter")
 
-            mail_counter = send_mail(subject, message, EMAIL_HOST_USER, [recepient], fail_silently=True)
-            print(mail_counter, "Print mail counter")
+            #           Email verification End
 
             user = User.objects.create_user(email=email, first_name=fname, last_name=lname,
                                             password=password, date_of_birth=dob)

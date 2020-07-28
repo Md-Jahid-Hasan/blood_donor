@@ -37,7 +37,9 @@ class DonorDetailsForm(forms.ModelForm):
                             'about spelling.',
             'last_date_of_donation': 'Last when give Blood',
             'phone_number': 'Enter valid number',
-            'specific_area': 'Which area you able to donate blood '
+            'specific_area': 'Which area you able to donate blood ',
+            'district': "Where you live. ex:(Dhaka, Chittagong, Magura)",
+
         }
 
     def clean(self):

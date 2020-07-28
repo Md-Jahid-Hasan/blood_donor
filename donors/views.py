@@ -38,6 +38,7 @@ def add_donor_details(request):
             data.save()
             d = BloodDonationHistory(user=request.user, donor_details=donor, date=ldd)
             d.save()
+            return redirect('about_donor')
 
     else:
         form = DonorDetailsForm(initial=initial)
@@ -68,6 +69,7 @@ def search_donor(request):
         'form': form
     }
     return render(request, 'home.html', context)
+
 
 donor_detail = []
 def donor_list(request):

@@ -75,6 +75,8 @@ class CreateUserForm(forms.ModelForm):
     def clean_email(self):
         if self.is_valid():
             email = self.cleaned_data['email']
+
             if len(User.objects.filter(email=email)) != 0:
                 raise forms.ValidationError("Already Exists")
+
         return email

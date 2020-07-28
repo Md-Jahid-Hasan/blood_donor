@@ -79,7 +79,7 @@ WSGI_APPLICATION = 'blood_doner.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-password = 'i@l0ve.y0u'
+
 
 DATABASES = {
     'default': {
@@ -140,13 +140,16 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
 AUTH_USER_MODEL = 'users.User'
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_HOST_USER = 'jahidhadiu@gmail.com'
-EMAIL_HOST_PASSWORD = password
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_USE_SSL = False
+# Email Verification Setting
 
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_HOST_USER = 'jahidhadiu@gmail.com'
+# EMAIL_HOST_PASSWORD = password
+# EMAIL_PORT = 587
+# EMAIL_USE_TLS = True
+# EMAIL_USE_SSL = False
+#
+# Email Verification setting End
 
 
