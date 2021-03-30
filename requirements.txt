@@ -34,7 +34,7 @@ pkginfo==1.5.0.1
 psycopg2==2.8.4
 pycodestyle==2.6.0
 pyflakes==2.2.0
-Pygments==2.6.1
+Pygments==2.7.4
 pylint==2.5.2
 pyparsing==2.4.7
 pyquery==1.4.1
